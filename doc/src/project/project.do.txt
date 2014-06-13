@@ -129,16 +129,21 @@ It can be wise to use a progressive set of test problems:
 In suggested order:
 
  o "Numba": "https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1"
+ o Cython: OpenMP looper
+ o Migrating loops to C, parallelize with OpenMP
  o PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr
+ o PETSc
 
 ======= Tasks =======
 
 Many of the tasks can be done in parallel.
 
- o Read "Finite difference methods for wave motion": "http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" [^wavedoc] to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.
+ o Read parts of "Finite difference methods for wave motion": "http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" [^wavedoc] to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.
  o Read about Numba and try it on differentiation and integration.
  o Try Numba on wave equations (1D first, then 2D).
  o More to follow...
 
 [^wavedoc]: If the numerics/mathematics in this document is not clear, it
 might help to look at a simple "vibration ODE": "http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" first (and that document builds on "a basic introduction to finite difference methods": "http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf", which starts absolutely from scratch).
+
+# Programmer peker til gamle koder...oppdater INF5620
