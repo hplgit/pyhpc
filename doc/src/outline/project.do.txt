@@ -1,0 +1,144 @@
+TITLE: Summer project for Martine
+AUTHOR: HPL
+DATE: today
+
+<%
+src = 'http://tinyurl.com/jvzzcfn'
+%>
+
+!bbox
+We ask the question: Is it possible to make a simple, ``student-style'',
+serial Python program and with simple means, quickly create a parallel,
+high-performance version of the code that can run on large
+clusters of multi-core/GPU nodes? We will explore the question in
+a specific problem domain: solution of partial differential equations
+by finite difference methods on uniform meshes.
+!ebox
+
+!split
+======= Simpler model problems =======
+
+Although partial differential equations (PDEs) are in focus, it can
+for learning and test purposes be advantageous to have some simpler
+models to work with.
+
+===== Numerical differentiation =====
+
+Given discrete values $f(x_i)$ of a function $f(x)$ at uniformly
+distributed mesh points
+$x_i=i\Delta x$, $i=0,\ldots,N_x$, we want to approximate
+the derivative $df/dx$ at the interior mesh points, $f'(x_i)$,
+$i=1,\ldots,N_x-1$, by a centered
+finite difference:
+
+!bt
+\[ f'(x_i) = \frac{f(x_{i+1}) - f(x_{i-1})}{2\Delta x}.\]
+!et
+At the end points we use one-sided differences:
+
+!bt
+\[ f'(x_0) = \frac{f(x_{1}) - f(x_{0})}{\Delta x},
+\quad f'(x_{N_x}) = \frac{f(x_{N_x}) - f(x_{N_x-1})}{\Delta x} .\]
+!et
+
+=== Serial implementations ===
+
+A straightforward scalar implemention with explicit loops may look like
+
+@@@CODE src/differentiate.py fromto: import numpy@def differentiate_vec
+A corresponding vectorized implementation takes the form
+
+@@@CODE src/differentiate.py def differentiate_vec@import nose
+
+=== Parallelization ===
+
+Assume $N_x$ is large and that we divide the mesh among processors.
+Think of $N_x=10$ and three processors: processor 0 has $x_0$, $x_1$, $x_2$;
+processor 1 has $x_3$, $x_4$, $x_5$; and processor 2 has the rest, $x_6$, $x_7$,
+$x_8$, $x_9$, and $x_{10}$. To compute the derivative at the three
+points on processor 1 we need to access $x_2$ and $x_6$. We add these
+*ghost points* to the set of local mesh points on this processor.
+The other processors must also make use of ghost points.
+
+===== Numerical integration =====
+
+Integrals of a mathematical function $f(x)$ can be approximated
+by the trapezoidal rule:
+
+!bt
+\[ I = \int_a^b f(x)dx \approx \Delta x\left(\frac{1}{2}f(a) +
+\frac{1}{2}f(b) + \sum_{j=1}^{N_x-1} f(a+j\Delta x)\right),\]
+!et
+where $\Delta x$ is the spacing between the $N_x+1$ evaluation (mesh) points:
+$\Delta x = (b-a)/N_x$.
+
+=== Serial implementations ===
+
+A straightforward scalar implemention with explicit loops may look like
+
+@@@CODE src/trapezoidal.py fromto: import numpy@def trapezoidal_vec
+A corresponding vectorized implementation takes the form
+
+@@@CODE src/trapezoidal.py def trapezoidal_vec@import nose
+
+=== Parallelization ===
+
+We now divide the mesh points among the processors.
+Each processor must sum its function values. The processors holding
+the first and last mesh points needs to adjust the function value
+at these points by a factor of one half. The one or all processors
+must collect the partial sums and form the final sum.
+
+
+===== Random walk =====
+
+ * Perfectly parallelizable model (no communication before calculating
+   statistics of the concentration of walkers).
+ * Demo programs from INF1100 can be used, but it is easier in 2D/3D
+   to vectorize and compute in general if the walkers go SE, SW, NE, NW
+   rather than N, S, E, W (i.e., the former can be computed by drawing
+   two/three independent random integers -1 or 1, one in each space
+   direction).
+
+======= Key model problems =======
+
+One of the most common time-consuming computing kernels when solving
+partial differential equations or running image processing algorithms
+is to move a (finite difference) stencil through a mesh.
+High computational efficiency of this kernel is what we want to study.
+A real physical problem where this kernel is basically the whole
+computation, is finite difference solution of the wave equation
+
+!bt
+\[ u_{tt} = c^2\nabla^2 u + f,\]
+!et
+where $u$ is a function of space $x$ and time $t$, $c$ is a constant,
+and $f$ is a function of $x$ and $t$.
+The demo programs are therefore complete codes for solving such wave
+equations.
+
+It can be wise to use a progressive set of test problems:
+
+ o Simplest possible 1D wave equation code, "`wave1D_u0.py`": "${src}/wave/wave1D/wave1D_u0.py"
+ o Simplest possible 2D wave equation code, "`wave2D_u0.py`": "${src}/wave/wave2D_u0/wave2D_u0.py"
+ o Variable coefficient 3D code for $u_{tt}=\nabla\cdot (c^2(x)\nabla u) + f$
+   for real performance tests
+
+======= Technologies =======
+
+In suggested order:
+
+ o "Numba": "https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1"
+ o PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr
+
+======= Tasks =======
+
+Many of the tasks can be done in parallel.
+
+ o Read "Finite difference methods for wave motion": "http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" [^wavedoc] to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.
+ o Read about Numba and try it on differentiation and integration.
+ o Try Numba on wave equations (1D first, then 2D).
+ o More to follow...
+
+[^wavedoc]: If the numerics/mathematics in this document is not clear, it
+might help to look at a simple "vibration ODE": "http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" first (and that document builds on "a basic introduction to finite difference methods": "http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf", which starts absolutely from scratch).

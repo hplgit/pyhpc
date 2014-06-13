@@ -1,0 +1,327 @@
+<!--
+Automatically generated HTML file from Doconce source
+(https://github.com/hplgit/doconce/)
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Doconce: https://github.com/hplgit/doconce/" />
+<meta name="description" content="Summer project for Martine">
+
+
+
+<!-- Bootstrap style: bootswatch_journal -->
+<link href="http://netdna.bootstrapcdn.com/bootswatch/3.1.1/journal/bootstrap.min.css" rel="stylesheet">
+<!-- not necessary
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+-->
+
+</head>
+
+<!-- tocinfo
+{'highest level': 1,
+ 'sections': [(' Simpler model problems ', 1, None, '___sec0'),
+              (' Numerical differentiation ', 2, None, '___sec1'),
+              (' Serial implementations ', 3, None, '___sec2'),
+              (' Parallelization ', 3, None, '___sec3'),
+              (' Numerical integration ', 2, None, '___sec4'),
+              (' Serial implementations ', 3, None, '___sec5'),
+              (' Parallelization ', 3, None, '___sec6'),
+              (' Random walk ', 2, None, '___sec7'),
+              (' Key model problems ', 1, None, '___sec8'),
+              (' Technologies ', 1, None, '___sec9'),
+              (' Tasks ', 1, None, '___sec10')]}
+end of tocinfo -->
+
+<body>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "none"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js"]
+  }
+});
+</script>
+<script type="text/javascript"
+ src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- Fix slow MathJax rendering in IE8 -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+
+
+
+
+    
+<!-- Bootstrap navigation bar -->
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="project.html">Summer project for Martine</a>
+  </div>
+  <div class="navbar-collapse collapse navbar-responsive-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+     <!-- navigation toc: "Simpler model problems" --> <li><a href="._project001.html#___sec0" style="font-size: 80%;"><b>Simpler model problems</b></a></li>
+     <!-- navigation toc: "Numerical differentiation" --> <li><a href="._project001.html#___sec1" style="font-size: 80%;">&nbsp;&nbsp;&nbsp;Numerical differentiation</a></li>
+     <!-- navigation toc: "Numerical integration" --> <li><a href="._project001.html#___sec4" style="font-size: 80%;">&nbsp;&nbsp;&nbsp;Numerical integration</a></li>
+     <!-- navigation toc: "Random walk" --> <li><a href="._project001.html#___sec7" style="font-size: 80%;">&nbsp;&nbsp;&nbsp;Random walk</a></li>
+     <!-- navigation toc: "Key model problems" --> <li><a href="._project001.html#___sec8" style="font-size: 80%;"><b>Key model problems</b></a></li>
+     <!-- navigation toc: "Technologies" --> <li><a href="._project001.html#___sec9" style="font-size: 80%;"><b>Technologies</b></a></li>
+     <!-- navigation toc: "Tasks" --> <li><a href="._project001.html#___sec10" style="font-size: 80%;"><b>Tasks</b></a></li>
+
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+</div> <!-- end of navigation bar -->
+
+<div class="container">
+
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p> <!-- add vertical space -->
+
+<a name="part0001"></a>
+<!-- !split -->
+
+<h1>Simpler model problems  <a name="___sec0"></a></h1>
+
+Although partial differential equations (PDEs) are in focus, it can
+for learning and test purposes be advantageous to have some simpler
+models to work with.
+
+<h2>Numerical differentiation  <a name="___sec1"></a></h2>
+
+Given discrete values \( f(x_i) \) of a function \( f(x) \) at uniformly
+distributed mesh points
+\( x_i=i\Delta x \), \( i=0,\ldots,N_x \), we want to approximate
+the derivative \( df/dx \) at the interior mesh points, \( f'(x_i) \),
+\( i=1,\ldots,N_x-1 \), by a centered
+finite difference:
+
+$$ f'(x_i) = \frac{f(x_{i+1}) - f(x_{i-1})}{2\Delta x}.$$
+
+At the end points we use one-sided differences:
+
+$$ f'(x_0) = \frac{f(x_{1}) - f(x_{0})}{\Delta x},
+\quad f'(x_{N_x}) = \frac{f(x_{N_x}) - f(x_{N_x-1})}{\Delta x} .$$
+
+<h3>Serial implementations  <a name="___sec2"></a></h3>
+
+A straightforward scalar implemention with explicit loops may look like
+
+<p>
+
+<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">numpy</span> <span style="color: #008000; font-weight: bold">as</span> <span style="color: #0000FF; font-weight: bold">np</span>
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">differentiate_scalar</span>(f, a, b, n):
+    <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
+<span style="color: #BA2121; font-style: italic">    Compute the discrete derivative of a Python function</span>
+<span style="color: #BA2121; font-style: italic">    f on [a,b] using n intervals. Internal points apply</span>
+<span style="color: #BA2121; font-style: italic">    a centered difference, while end points apply a one-sided</span>
+<span style="color: #BA2121; font-style: italic">    difference.</span>
+<span style="color: #BA2121; font-style: italic">    &quot;&quot;&quot;</span>
+    x <span style="color: #666666">=</span> np<span style="color: #666666">.</span>linspace(a, b, n<span style="color: #666666">+1</span>)  <span style="color: #408080; font-style: italic"># mesh</span>
+    df <span style="color: #666666">=</span> np<span style="color: #666666">.</span>zeros_like(x)       <span style="color: #408080; font-style: italic"># df/dx</span>
+    f_vec <span style="color: #666666">=</span> f(x)
+    dx <span style="color: #666666">=</span> x[<span style="color: #666666">1</span>] <span style="color: #666666">-</span> x[<span style="color: #666666">0</span>]
+    <span style="color: #408080; font-style: italic"># Internal mesh points</span>
+    <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #666666">1</span>, n):
+        df[i] <span style="color: #666666">=</span> (f_vec[i<span style="color: #666666">+1</span>] <span style="color: #666666">-</span> f_vec[i<span style="color: #666666">-1</span>])<span style="color: #666666">/</span>(<span style="color: #666666">2*</span>dx)
+    <span style="color: #408080; font-style: italic"># End points</span>
+    df[<span style="color: #666666">0</span>]  <span style="color: #666666">=</span> (f_vec[<span style="color: #666666">1</span>]  <span style="color: #666666">-</span> f_vec[<span style="color: #666666">0</span>]) <span style="color: #666666">/</span>dx
+    df[<span style="color: #666666">-1</span>] <span style="color: #666666">=</span> (f_vec[<span style="color: #666666">-1</span>] <span style="color: #666666">-</span> f_vec[<span style="color: #666666">-2</span>])<span style="color: #666666">/</span>dx
+    <span style="color: #008000; font-weight: bold">return</span> df
+</pre></div>
+<p>
+A corresponding vectorized implementation takes the form
+
+<p>
+
+<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">differentiate_vec</span>(f, a, b, n):
+    <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
+<span style="color: #BA2121; font-style: italic">    Compute the discrete derivative of a Python function</span>
+<span style="color: #BA2121; font-style: italic">    f on [a,b] using n intervals. Internal points apply</span>
+<span style="color: #BA2121; font-style: italic">    a centered difference, while end points apply a one-sided</span>
+<span style="color: #BA2121; font-style: italic">    difference. Vectorized version.</span>
+<span style="color: #BA2121; font-style: italic">    &quot;&quot;&quot;</span>
+    x <span style="color: #666666">=</span> np<span style="color: #666666">.</span>linspace(a, b, n<span style="color: #666666">+1</span>)  <span style="color: #408080; font-style: italic"># mesh</span>
+    df <span style="color: #666666">=</span> np<span style="color: #666666">.</span>zeros_like(x)       <span style="color: #408080; font-style: italic"># df/dx</span>
+    f_vec <span style="color: #666666">=</span> f(x)
+    dx <span style="color: #666666">=</span> x[<span style="color: #666666">1</span>] <span style="color: #666666">-</span> x[<span style="color: #666666">0</span>]
+    <span style="color: #408080; font-style: italic"># Internal mesh points</span>
+    df[<span style="color: #666666">1</span>:<span style="color: #666666">-1</span>] <span style="color: #666666">=</span> (f_vec[<span style="color: #666666">2</span>:] <span style="color: #666666">-</span> f_vec[:<span style="color: #666666">-2</span>])<span style="color: #666666">/</span>(<span style="color: #666666">2*</span>dx)
+    <span style="color: #408080; font-style: italic"># End points</span>
+    df[<span style="color: #666666">0</span>]  <span style="color: #666666">=</span> (f_vec[<span style="color: #666666">1</span>]  <span style="color: #666666">-</span> f_vec[<span style="color: #666666">0</span>]) <span style="color: #666666">/</span>dx
+    df[<span style="color: #666666">-1</span>] <span style="color: #666666">=</span> (f_vec[<span style="color: #666666">-1</span>] <span style="color: #666666">-</span> f_vec[<span style="color: #666666">-2</span>])<span style="color: #666666">/</span>dx
+    <span style="color: #008000; font-weight: bold">return</span> df
+</pre></div>
+
+<h3>Parallelization  <a name="___sec3"></a></h3>
+
+Assume \( N_x \) is large and that we divide the mesh among processors.
+Think of \( N_x=10 \) and three processors: processor 0 has \( x_0 \), \( x_1 \), \( x_2 \);
+processor 1 has \( x_3 \), \( x_4 \), \( x_5 \); and processor 2 has the rest, \( x_6 \), \( x_7 \),
+\( x_8 \), \( x_9 \), and \( x_{10} \). To compute the derivative at the three
+points on processor 1 we need to access \( x_2 \) and \( x_6 \). We add these
+<em>ghost points</em> to the set of local mesh points on this processor.
+The other processors must also make use of ghost points.
+
+<h2>Numerical integration  <a name="___sec4"></a></h2>
+
+Integrals of a mathematical function \( f(x) \) can be approximated
+by the trapezoidal rule:
+
+$$ I = \int_a^b f(x)dx \approx \Delta x\left(\frac{1}{2}f(a) +
+\frac{1}{2}f(b) + \sum_{j=1}^{N_x-1} f(a+j\Delta x)\right),$$
+
+where \( \Delta x \) is the spacing between the \( N_x+1 \) evaluation (mesh) points:
+\( \Delta x = (b-a)/N_x \).
+
+<h3>Serial implementations  <a name="___sec5"></a></h3>
+
+A straightforward scalar implemention with explicit loops may look like
+
+<p>
+
+<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">numpy</span> <span style="color: #008000; font-weight: bold">as</span> <span style="color: #0000FF; font-weight: bold">np</span>
+
+<span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">trapezoidal_scalar</span>(f, a, b, n):
+    <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
+<span style="color: #BA2121; font-style: italic">    Compute the integral of f from a to b with n intervals,</span>
+<span style="color: #BA2121; font-style: italic">    using the Trapezoidal rule.</span>
+<span style="color: #BA2121; font-style: italic">    &quot;&quot;&quot;</span>
+    h <span style="color: #666666">=</span> (b<span style="color: #666666">-</span>a)<span style="color: #666666">/</span><span style="color: #008000">float</span>(n)
+    I <span style="color: #666666">=</span> <span style="color: #666666">0.5*</span>(f(a) <span style="color: #666666">+</span> f(b))
+    <span style="color: #008000; font-weight: bold">for</span> i <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #008000">range</span>(<span style="color: #666666">1</span>, n):
+        x <span style="color: #666666">=</span> a <span style="color: #666666">+</span> i<span style="color: #666666">*</span>h
+        I <span style="color: #666666">+=</span> f(x)
+    I <span style="color: #666666">=</span> h<span style="color: #666666">*</span>I
+    <span style="color: #008000; font-weight: bold">return</span> I
+</pre></div>
+<p>
+A corresponding vectorized implementation takes the form
+
+<p>
+
+<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">trapezoidal_vec</span>(f, a, b, n):
+    <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
+<span style="color: #BA2121; font-style: italic">    Compute the integral of f from a to b with n intervals,</span>
+<span style="color: #BA2121; font-style: italic">    using the Trapezoidal rule. Vectorized version.</span>
+<span style="color: #BA2121; font-style: italic">    &quot;&quot;&quot;</span>
+    x <span style="color: #666666">=</span> np<span style="color: #666666">.</span>linspace(a, b, n<span style="color: #666666">+1</span>)
+    f_vec <span style="color: #666666">=</span> f(x)
+    f_vec[<span style="color: #666666">0</span>] <span style="color: #666666">/=</span> <span style="color: #666666">2.0</span>
+    f_vec[<span style="color: #666666">-1</span>] <span style="color: #666666">/=</span> <span style="color: #666666">2.0</span>
+    h <span style="color: #666666">=</span> (b<span style="color: #666666">-</span>a)<span style="color: #666666">/</span><span style="color: #008000">float</span>(n)
+    I <span style="color: #666666">=</span> h<span style="color: #666666">*</span>np<span style="color: #666666">.</span>sum(f_vec)
+    <span style="color: #008000; font-weight: bold">return</span> I
+</pre></div>
+
+<h3>Parallelization  <a name="___sec6"></a></h3>
+
+We now divide the mesh points among the processors.
+Each processor must sum its function values. The processors holding
+the first and last mesh points needs to adjust the function value
+at these points by a factor of one half. The one or all processors
+must collect the partial sums and form the final sum.
+
+<h2>Random walk  <a name="___sec7"></a></h2>
+
+<ul>
+ <li> Perfectly parallelizable model (no communication before calculating
+   statistics of the concentration of walkers).</li>
+ <li> Demo programs from INF1100 can be used, but it is easier in 2D/3D
+   to vectorize and compute in general if the walkers go SE, SW, NE, NW
+   rather than N, S, E, W (i.e., the former can be computed by drawing
+   two/three independent random integers -1 or 1, one in each space
+   direction).</li>
+</ul>
+
+<h1>Key model problems  <a name="___sec8"></a></h1>
+
+One of the most common time-consuming computing kernels when solving
+partial differential equations or running image processing algorithms
+is to move a (finite difference) stencil through a mesh.
+High computational efficiency of this kernel is what we want to study.
+A real physical problem where this kernel is basically the whole
+computation, is finite difference solution of the wave equation
+
+$$ u_{tt} = c^2\nabla^2 u + f,$$
+
+where \( u \) is a function of space \( x \) and time \( t \), \( c \) is a constant,
+and \( f \) is a function of \( x \) and \( t \).
+The demo programs are therefore complete codes for solving such wave
+equations.
+
+<p>
+It can be wise to use a progressive set of test problems:
+
+<ol>
+<li> Simplest possible 1D wave equation code, <a href="http://tinyurl.com/jvzzcfn/wave/wave1D/wave1D_u0.py" target="_self"><tt>wave1D_u0.py</tt></a></li>
+<li> Simplest possible 2D wave equation code, <a href="http://tinyurl.com/jvzzcfn/wave/wave2D_u0/wave2D_u0.py" target="_self"><tt>wave2D_u0.py</tt></a></li>
+<li> Variable coefficient 3D code for \( u_{tt}=\nabla\cdot (c^2(x)\nabla u) + f \)
+   for real performance tests</li>
+</ol>
+
+<h1>Technologies  <a name="___sec9"></a></h1>
+
+In suggested order:
+
+<ol>
+<li> <a href="https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1" target="_self">Numba</a></li>
+<li> PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr</li>
+</ol>
+
+<h1>Tasks  <a name="___sec10"></a></h1>
+
+Many of the tasks can be done in parallel.
+
+<ol>
+<li> Read <a href="http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" target="_self">Finite difference methods for wave motion</a> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="If the numerics/mathematics in this document is not clear, it might help to look at a simple <a href="http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" target="_self">vibration ODE</a> first (and that document builds on <a href="http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf" target="_self">a basic introduction to finite difference methods</a>, which starts absolutely from scratch)."><a name="link_footnote_1"><a><a href="#def_footnote_1" style="color: white">1</a></button> to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.</li>
+<li> Read about Numba and try it on differentiation and integration.</li>
+<li> Try Numba on wave equations (1D first, then 2D).</li>
+<li> More to follow...</li>
+</ol>
+
+<p><a name="def_footnote_1"></a><a href="#link_footnote_1"><b>1:</b></a> If the numerics/mathematics in this document is not clear, it
+might help to look at a simple <a href="http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" target="_self">vibration ODE</a> first (and that document builds on <a href="http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf" target="_self">a basic introduction to finite difference methods</a>, which starts absolutely from scratch).
+
+<p>
+<ul class="pager">
+  <li class="previous">
+    <a href="._project000.html">&larr; Prev</a>
+  </li>
+
+
+</ul>
+<!-- ------------------- end of main content --------------- -->
+
+</div>  <!-- end container -->
+<!-- include javascript, jQuery *first* -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap footer
+<footer>
+<a href="http://..."><img width="250" align=right src="http://..."></a>
+</footer>
+-->
+
+
+</body>
+</html>
+    
+
