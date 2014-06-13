@@ -282,7 +282,10 @@ In suggested order:
 
 <ol>
 <li> <a href="https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1" target="_self">Numba</a></li>
+<li> Cython: OpenMP looper</li>
+<li> Migrating loops to C, parallelize with OpenMP</li>
 <li> PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr</li>
+<li> PETSc</li>
 </ol>
 
 <h1>Tasks  <a name="___sec10"></a></h1>
@@ -290,7 +293,7 @@ In suggested order:
 Many of the tasks can be done in parallel.
 
 <ol>
-<li> Read <a href="http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" target="_self">Finite difference methods for wave motion</a> <button type="button" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="If the numerics/mathematics in this document is not clear, it might help to look at a simple <a href="http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" target="_self">vibration ODE</a> first (and that document builds on <a href="http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf" target="_self">a basic introduction to finite difference methods</a>, which starts absolutely from scratch)."><a name="link_footnote_1"><a><a href="#def_footnote_1" style="color: white">1</a></button> to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.</li>
+<li> Read parts of <a href="http://hplgit.github.io/INF5620/doc/pub/main_wave.pdf" target="_self">Finite difference methods for wave motion</a> <button type="button" class="btn btn-primary btn-xs" rel="tooltip" data-placement="top" title="If the numerics/mathematics in this document is not clear, it might help to look at a simple vibration ODE first (and that document builds on a basic introduction to finite difference methods, which starts absolutely from scratch)."><a name="link_footnote_1"><a><a href="#def_footnote_1" style="color: white">1</a></button> to get a background of the algorithms for the wave equation. This document also explains how to migrate parts of the Python code to Fortran or C as well as the Cython technology. These are complementary tools to what is studied in the present project.</li>
 <li> Read about Numba and try it on differentiation and integration.</li>
 <li> Try Numba on wave equations (1D first, then 2D).</li>
 <li> More to follow...</li>
@@ -298,6 +301,9 @@ Many of the tasks can be done in parallel.
 
 <p><a name="def_footnote_1"></a><a href="#link_footnote_1"><b>1:</b></a> If the numerics/mathematics in this document is not clear, it
 might help to look at a simple <a href="http://hplgit.github.io/INF5620/doc/pub/main_vib.pdf" target="_self">vibration ODE</a> first (and that document builds on <a href="http://hplgit.github.io/INF5620/doc/pub/main_decay.pdf" target="_self">a basic introduction to finite difference methods</a>, which starts absolutely from scratch).
+
+<p>
+<!-- Programmer peker til gamle koder...oppdater INF5620 -->
 
 <p>
 <ul class="pager">
