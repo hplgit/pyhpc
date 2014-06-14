@@ -131,8 +131,15 @@ In suggested order:
  o "Numba": "https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1"
  o Cython: OpenMP looper
  o Migrating loops to C, parallelize with OpenMP
- o PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr
+ o PyThran, Disco, PyCloud, NumExpr
+ o "Copperhead": "http://copperhead.github.io/"
+ o "Shedskin Python to C++ compiler": "http://ianozsvald.com/2008/11/17/making-python-math-196-faster-with-shedskin/"
  o PETSc
+
+Links:
+
+ * "Comparison of Python, NumPy, Weave, Cython for Laplace operator": "http://technicaldiscovery.blogspot.no/2011/06/speeding-up-python-numpy-cython-and.html" (see the comments for NumExpr example)
+ * "Ozsvald's 4h tutorial on speeding up Python with many tools": "http://ep2011.europython.eu/conference/talks/experiences-making-cpu-bound-tasks-run-much-faster"
 
 ======= Tasks =======
 
