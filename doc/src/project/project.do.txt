@@ -129,12 +129,20 @@ It can be wise to use a progressive set of test problems:
 In suggested order:
 
  o "Numba": "https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1"
- o Cython: OpenMP looper
+ o Cython: OpenMP loops
+ o "NumExpr": "https://code.google.com/p/numexpr/" for speeding up numpy
+   expressions.
  o Migrating loops to C, parallelize with OpenMP
- o PyThran, Disco, PyCloud, NumExpr
+ o "PyThran": "https://github.com/serge-sans-paille/pythran/", "paper": "http://conference.scipy.org/proceedings/scipy2013/pdfs/guelton.pdf"
+ o "PiCloud": "http://www.picloud.com/" gives access to supercomputing with
+   Python and other languages.
  o "Copperhead": "http://copperhead.github.io/"
  o "Shedskin Python to C++ compiler": "http://ianozsvald.com/2008/11/17/making-python-math-196-faster-with-shedskin/"
- o PETSc
+ o PETSc is a linear algebra library in C (with Python bindings via `petsc4py`), which can
+   be used for parallel computing with vectors and matrices.
+   We started a "project on exploring petsc4py to solve PDEs": "https://github.com/hplgit/ppde".
+ o "Disco": "http://discoproject.org/" for parallel implementation of
+   MapReduce algorithms. Once upon a time we started a "tutorial": "http://hplgit.github.io/map-reduce4sci/doc/web/index.html" for MapReduce in numerical computing.
 
 Links:
 

@@ -120,7 +120,7 @@ A straightforward scalar implemention with explicit loops may look like
 
 <p>
 
-<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<!-- code=python (!bc pycod) typeset with pygments style "default" -->
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">numpy</span> <span style="color: #008000; font-weight: bold">as</span> <span style="color: #0000FF; font-weight: bold">np</span>
 
 <span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">differentiate_scalar</span>(f, a, b, n):
@@ -147,7 +147,7 @@ A corresponding vectorized implementation takes the form
 
 <p>
 
-<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<!-- code=python (!bc pycod) typeset with pygments style "default" -->
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">differentiate_vec</span>(f, a, b, n):
     <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
 <span style="color: #BA2121; font-style: italic">    Compute the discrete derivative of a Python function</span>
@@ -194,7 +194,7 @@ A straightforward scalar implemention with explicit loops may look like
 
 <p>
 
-<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<!-- code=python (!bc pycod) typeset with pygments style "default" -->
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">numpy</span> <span style="color: #008000; font-weight: bold">as</span> <span style="color: #0000FF; font-weight: bold">np</span>
 
 <span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">trapezoidal_scalar</span>(f, a, b, n):
@@ -215,7 +215,7 @@ A corresponding vectorized implementation takes the form
 
 <p>
 
-<!-- code=python (from !bc pycod) typeset with pygments style "default" -->
+<!-- code=python (!bc pycod) typeset with pygments style "default" -->
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span style="color: #008000; font-weight: bold">def</span> <span style="color: #0000FF">trapezoidal_vec</span>(f, a, b, n):
     <span style="color: #BA2121; font-style: italic">&quot;&quot;&quot;</span>
 <span style="color: #BA2121; font-style: italic">    Compute the integral of f from a to b with n intervals,</span>
@@ -282,11 +282,28 @@ In suggested order:
 
 <ol>
 <li> <a href="https://www.wakari.io/sharing/bundle/aron/Accelerating_Python_Libraries_with_Numba_-_Part_1" target="_self">Numba</a></li>
-<li> Cython: OpenMP looper</li>
+<li> Cython: OpenMP loops</li>
+<li> <a href="https://code.google.com/p/numexpr/" target="_self">NumExpr</a> for speeding up numpy
+   expressions.</li>
 <li> Migrating loops to C, parallelize with OpenMP</li>
-<li> PyTrhan, Shedskin, Copperhead, Disco, PyCloud, NumExpr</li>
-<li> PETSc</li>
+<li> <a href="https://github.com/serge-sans-paille/pythran/" target="_self">PyThran</a>, <a href="http://conference.scipy.org/proceedings/scipy2013/pdfs/guelton.pdf" target="_self">paper</a></li>
+<li> <a href="http://www.picloud.com/" target="_self">PiCloud</a> gives access to supercomputing with
+   Python and other languages.</li>
+<li> <a href="http://copperhead.github.io/" target="_self">Copperhead</a></li>
+<li> <a href="http://ianozsvald.com/2008/11/17/making-python-math-196-faster-with-shedskin/" target="_self">Shedskin Python to C++ compiler</a></li>
+<li> PETSc is a linear algebra library in C (with Python bindings via <code>petsc4py</code>), which can
+   be used for parallel computing with vectors and matrices.
+   We started a <a href="https://github.com/hplgit/ppde" target="_self">project on exploring petsc4py to solve PDEs</a>.</li>
+<li> <a href="http://discoproject.org/" target="_self">Disco</a> for parallel implementation of
+   MapReduce algorithms. Once upon a time we started a <a href="http://hplgit.github.io/map-reduce4sci/doc/web/index.html" target="_self">tutorial</a> for MapReduce in numerical computing.</li>
 </ol>
+
+Links:
+
+<ul>
+ <li> <a href="http://technicaldiscovery.blogspot.no/2011/06/speeding-up-python-numpy-cython-and.html" target="_self">Comparison of Python, NumPy, Weave, Cython for Laplace operator</a> (see the comments for NumExpr example)</li>
+ <li> <a href="http://ep2011.europython.eu/conference/talks/experiences-making-cpu-bound-tasks-run-much-faster" target="_self">Ozsvald's 4h tutorial on speeding up Python with many tools</a></li>
+</ul>
 
 <h1>Tasks  <a name="___sec10"></a></h1>
 
@@ -306,12 +323,11 @@ might help to look at a simple <a href="http://hplgit.github.io/INF5620/doc/pub/
 <!-- Programmer peker til gamle koder...oppdater INF5620 -->
 
 <p>
+
 <ul class="pager">
   <li class="previous">
     <a href="._project000.html">&larr; Prev</a>
   </li>
-
-
 </ul>
 <!-- ------------------- end of main content --------------- -->
 
