@@ -26,6 +26,10 @@ def solver(I, V, f, c, L, Nx, C, T):
     u = advance(u, u_1, u_2, f_vec, I_vec, V_vec, Nx, Nt, C2, dt, True)
     u = advance(u, u_1, u_2, f_vec, I_vec, V_vec, Nx, Nt, C2, dt, False)
 
+    # HPL: Best to use exactly the same function splitting as in wave2D_u0.py,
+    # i.e., have the time loop in solver and let advance just have loops
+    # over the array elements. Then the 1D and 2D solvers are consistent.
+
     return u, x, t
 
 
@@ -84,7 +88,7 @@ def test_quadratic(Nx=100):
     c = 1.5
     C = 0.75
     T = 18
-    
+
     start = time.time()
     u, x, t = solver(I, V, f, c, L, Nx, C, T)
     end = time.time()
