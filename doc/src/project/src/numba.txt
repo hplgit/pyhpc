@@ -1,0 +1,51 @@
+Se denne siden for dokumentasjon av tillatte typer:  http://numba.pydata.org/numba-doc/dev/spec.html
+Generell dokumentasjon numba: http://numba.pydata.org/numba-doc/dev/
+
+- Dekoratorer: jit, autojit, vectorize, guvectorize
+For alle disse dekoratorene (unntatt autojit) må man vite typen til alle inputvariabler og returvariabelen for å bruke de på en funksjon. 
+
+Kan brukes på funksjoner slik:
+@jit('returntype(arg1type, arg2type,...)')
+def foo(arg1, arg2,...): ...
+
+Autojit er den absolutt enkleste dekoratoren, da slipper man å forholde seg til typene til variablene:
+@autojit
+def foo(...): ...
+
+Hvis numba-kompilatoren kommer til en type den ikke støtter, enten inni funksjonen eller som input, vil den enten kjøre koden som "vanlig" pythonkode eller avslutte programmet med en feilmelding, avhengig av hva slags type det er (se første link). Hvis den porter koden tilbake til vanlig python, vil man (åpenbart) ikke få noe speedup. For å tvinge numba til å ikke porte tilbake til python, kan man sende med et ekstra argument til dekoratoren som gjør at den aborterer programmet hvis den ikke klarer å kjøre alt med numba-kompilatoren:
+@jit('returtype(arg1type, arg2type)', nopython=True)
+@autojit(nopython=True)
+
+Alternativt kan man bruke dekoratorene slik: (gitt funksjonen foo)
+numba_f = jit('returntype(arg1type,...)')(foo)
+Da kan numba_f kalles med argumentene til foo, slik:
+returnval = numba_f(arg1,...)
+
+Dekoratorene har også et argument target som sier hvor man skal eksekvere koden. Dette kan enten være 'cpu' eller 'gpu', default er 'cpu'. Dekoratoren vectorize har også 'parallel'. Spesifiseres slik: 
+@jit('returtype(arg1type, arg2type)', target='gpu')
+
+Typer:
+Kan bruke numba-funksjonen typeof for å finne typen til en variabel. Eksempler på numbatyper er float64, int64, int32... 
+Hvis man gjør dette: 
+bar = np.zeros(n+1)
+numba.typeof(bar)
+
+Vil man få: array(float64, 1d, C)
+Der "C" står for C-like. Numba-typen (som man ville skrevet i dekoratoren hvis bar er input til en funksjon) er float64[::1]. Hvis typen var array(float64, 1d, A) (A for generic-strided. Aldri vært borti det), ville man derimot skrevet float64[:]. Hvis typen var array(float64, 2d, C), ville man skrevet float64[:,::1]. 
+
+Huskeliste over ikke-lovlige operasjoner med numba: 
+- Funksjoner som input til en funksjon
+- Bruk av numpy-funksjoner inni funksjonen(som np.zeros, np.linspace osv) *
+- Vektoriseringstriks inni funksjonen (som f. eks. å skrive u[:], u[1:-1] etc). Må alltid eksplisitt skrive forløkker.
+- Return-statements inni løkker
+- Hvis target='gpu', er det ikke lov med return-statement inni funksjonen. 
+- Ikke lov med input som har default-verdi (Dvs. ser slik ut: def foo(step1=True)). 
+- Jeg har ikke klart å returnere flere variabler fra funksjonen, går kun med en returvariabel. 
+
+*Usikker på om dette gjelder alle numpy-funksjoner eller kun funksjoner som går på minneallokering (funksjoner der du oppretter nye arrays). 
+
+Annet:
+- True/False har typen int64. 
+- NumPy-vektorer er lovlig som input
+- List-comprehension er lovlig
+- Hvis du har en variabel bar og numba.typeof(bar) gir "pyobject", kommer numba til å porte koden tilbake til Python (dvs. hvis du bruker bar inni funksjonen med dekoratoren). Det betyr at du må skrive om koden slik at du ikke har noen variabler av typen pyobject inni funksjonen for å få speedup.
