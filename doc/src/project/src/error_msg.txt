@@ -1,0 +1,121 @@
+marenger@marenger-Latitude-E6400:~/Dropbox/sommerjobb/2Dwave$ python setup.py build_ext --inplace
+running build_ext
+skipping 'wave2D_u0_cy.c' Cython extension (up-to-date)
+marenger@marenger-Latitude-E6400:~/Dropbox/sommerjobb/2Dwave$ python wave2D_u0_cython_test.py 
+*** glibc detected *** python: double free or corruption (!prev): 0x0000000000f0dd30 ***
+======= Backtrace: =========
+/lib/x86_64-linux-gnu/libc.so.6(+0x7eb96)[0x7fd9008e7b96]
+/home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/multiarray.so(+0xc5e76)[0x7fd8ffa99e76]
+/home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/multiarray.so(+0x1fad6)[0x7fd8ff9f3ad6]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(+0x74013)[0x7fd9012c1013]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x3b5)[0x7fd90133df05]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x5ac5)[0x7fd90133c1c5]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8c9)[0x7fd90133e419]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x5ac5)[0x7fd90133c1c5]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8c9)[0x7fd90133e419]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyEval_EvalCode+0x32)[0x7fd90133e492]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyRun_FileExFlags+0xc1)[0x7fd901361b61]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(PyRun_SimpleFileExFlags+0x1c7)[0x7fd901361e07]
+/home/marenger/anaconda/bin/../lib/libpython2.7.so.1.0(Py_Main+0xbd2)[0x7fd9013745e2]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xed)[0x7fd90088a76d]
+python[0x400649]
+======= Memory map: ========
+00400000-00401000 r-xp 00000000 08:06 3939173                            /home/marenger/anaconda/bin/python2.7
+00600000-00601000 rw-p 00000000 08:06 3939173                            /home/marenger/anaconda/bin/python2.7
+00a98000-0102f000 rw-p 00000000 00:00 0                                  [heap]
+32b9600000-32b9682000 r-xp 00000000 08:06 4461850                        /home/marenger/anaconda/lib/libm-2.5.so
+32b9682000-32b9881000 ---p 00082000 08:06 4461850                        /home/marenger/anaconda/lib/libm-2.5.so
+32b9881000-32b9882000 r--p 00081000 08:06 4461850                        /home/marenger/anaconda/lib/libm-2.5.so
+32b9882000-32b9883000 rw-p 00082000 08:06 4461850                        /home/marenger/anaconda/lib/libm-2.5.so
+7fd8f9e84000-7fd8f9e90000 r-xp 00000000 08:06 3939810                    /home/marenger/Dropbox/sommerjobb/2Dwave/wave2D_u0_cy.so
+7fd8f9e90000-7fd8fa08f000 ---p 0000c000 08:06 3939810                    /home/marenger/Dropbox/sommerjobb/2Dwave/wave2D_u0_cy.so
+7fd8fa08f000-7fd8fa090000 r--p 0000b000 08:06 3939810                    /home/marenger/Dropbox/sommerjobb/2Dwave/wave2D_u0_cy.so
+7fd8fa090000-7fd8fa091000 rw-p 0000c000 08:06 3939810                    /home/marenger/Dropbox/sommerjobb/2Dwave/wave2D_u0_cy.so
+7fd8fa091000-7fd8fa097000 r-xp 00000000 08:06 4982739                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_multiprocessing.so
+7fd8fa097000-7fd8fa296000 ---p 00006000 08:06 4982739                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_multiprocessing.so
+7fd8fa296000-7fd8fa297000 rw-p 00005000 08:06 4982739                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_multiprocessing.so
+7fd8fa297000-7fd8fa29a000 r-xp 00000000 08:06 4982756                    /home/marenger/anaconda/lib/python2.7/lib-dynload/fcntl.so
+7fd8fa29a000-7fd8fa499000 ---p 00003000 08:06 4982756                    /home/marenger/anaconda/lib/python2.7/lib-dynload/fcntl.so
+7fd8fa499000-7fd8fa49b000 rw-p 00002000 08:06 4982756                    /home/marenger/anaconda/lib/python2.7/lib-dynload/fcntl.so
+7fd8fa49b000-7fd8fa49f000 r-xp 00000000 08:06 4982770                    /home/marenger/anaconda/lib/python2.7/lib-dynload/select.so
+7fd8fa49f000-7fd8fa69f000 ---p 00004000 08:06 4982770                    /home/marenger/anaconda/lib/python2.7/lib-dynload/select.so
+7fd8fa69f000-7fd8fa6a1000 rw-p 00004000 08:06 4982770                    /home/marenger/anaconda/lib/python2.7/lib-dynload/select.so
+7fd8fa6a1000-7fd8fa6af000 r-xp 00000000 08:06 4982766                    /home/marenger/anaconda/lib/python2.7/lib-dynload/parser.so
+7fd8fa6af000-7fd8fa8ae000 ---p 0000e000 08:06 4982766                    /home/marenger/anaconda/lib/python2.7/lib-dynload/parser.so
+7fd8fa8ae000-7fd8fa8af000 rw-p 0000d000 08:06 4982766                    /home/marenger/anaconda/lib/python2.7/lib-dynload/parser.so
+7fd8fa8af000-7fd8fa8b3000 r-xp 00000000 08:06 4982749                    /home/marenger/anaconda/lib/python2.7/lib-dynload/binascii.so
+7fd8fa8b3000-7fd8faab3000 ---p 00004000 08:06 4982749                    /home/marenger/anaconda/lib/python2.7/lib-dynload/binascii.so
+7fd8faab3000-7fd8faab4000 rw-p 00004000 08:06 4982749                    /home/marenger/anaconda/lib/python2.7/lib-dynload/binascii.so
+7fd8faab4000-7fd8fab34000 rw-p 00000000 00:00 0 
+7fd8fad34000-7fd8fad74000 rw-p 00000000 00:00 0 
+7fd8fadf4000-7fd8fae34000 rw-p 00000000 00:00 0 
+7fd8fae34000-7fd8fae49000 r-xp 00000000 08:06 4587627                    /home/marenger/anaconda/lib/libz.so.1.2.7
+7fd8fae49000-7fd8fb048000 ---p 00015000 08:06 4587627                    /home/marenger/anaconda/lib/libz.so.1.2.7
+7fd8fb048000-7fd8fb049000 rw-p 00014000 08:06 4587627                    /home/marenger/anaconda/lib/libz.so.1.2.7
+7fd8fb049000-7fd8fb04e000 r-xp 00000000 08:06 4982777                    /home/marenger/anaconda/lib/python2.7/lib-dynload/zlib.so
+7fd8fb04e000-7fd8fb24d000 ---p 00005000 08:06 4982777                    /home/marenger/anaconda/lib/python2.7/lib-dynload/zlib.so
+7fd8fb24d000-7fd8fb24f000 rw-p 00004000 08:06 4982777                    /home/marenger/anaconda/lib/python2.7/lib-dynload/zlib.so
+7fd8fb24f000-7fd8fb2cf000 rw-p 00000000 00:00 0 
+7fd8fb2cf000-7fd8fb2d3000 r-xp 00000000 08:06 4982736                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_locale.so
+7fd8fb2d3000-7fd8fb4d3000 ---p 00004000 08:06 4982736                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_locale.so
+7fd8fb4d3000-7fd8fb4d4000 rw-p 00004000 08:06 4982736                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_locale.so
+7fd8fb4d4000-7fd8fb554000 rw-p 00000000 00:00 0 
+7fd8fb554000-7fd8fb55b000 r-xp 00000000 08:06 4982744                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_struct.so
+7fd8fb55b000-7fd8fb75b000 ---p 00007000 08:06 4982744                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_struct.so
+7fd8fb75b000-7fd8fb75d000 rw-p 00007000 08:06 4982744                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_struct.so
+7fd8fb75d000-7fd8fb77c000 r-xp 00000000 08:06 4982725                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_ctypes.so
+7fd8fb77c000-7fd8fb97c000 ---p 0001f000 08:06 4982725                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_ctypes.so
+7fd8fb97c000-7fd8fb981000 rw-p 0001f000 08:06 4982725                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_ctypes.so
+7fd8fb981000-7fd8fb9d7000 r-xp 00000000 08:06 4202761                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/random/mtrand.so
+7fd8fb9d7000-7fd8fbbd6000 ---p 00056000 08:06 4202761                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/random/mtrand.so
+7fd8fbbd6000-7fd8fbc0d000 rw-p 00055000 08:06 4202761                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/random/mtrand.so
+7fd8fbc0d000-7fd8fbd0e000 rw-p 00000000 00:00 0 
+7fd8fbd0e000-7fd8fbd13000 r-xp 00000000 08:06 4982772                    /home/marenger/anaconda/lib/python2.7/lib-dynload/strop.so
+7fd8fbd13000-7fd8fbf12000 ---p 00005000 08:06 4982772                    /home/marenger/anaconda/lib/python2.7/lib-dynload/strop.so
+7fd8fbf12000-7fd8fbf14000 rw-p 00004000 08:06 4982772                    /home/marenger/anaconda/lib/python2.7/lib-dynload/strop.so
+7fd8fbf14000-7fd8fbf1d000 r-xp 00000000 08:06 4202445                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/fft/fftpack_lite.so
+7fd8fbf1d000-7fd8fc11d000 ---p 00009000 08:06 4202445                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/fft/fftpack_lite.so
+7fd8fc11d000-7fd8fc11e000 rw-p 00009000 08:06 4202445                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/fft/fftpack_lite.so
+7fd8fc11e000-7fd8fc15e000 rw-p 00000000 00:00 0 
+7fd8fc15e000-7fd8fc15f000 r-xp 00000000 08:06 4982757                    /home/marenger/anaconda/lib/python2.7/lib-dynload/future_builtins.so
+7fd8fc15f000-7fd8fc35f000 ---p 00001000 08:06 4982757                    /home/marenger/anaconda/lib/python2.7/lib-dynload/future_builtins.so
+7fd8fc35f000-7fd8fc360000 rw-p 00001000 08:06 4982757                    /home/marenger/anaconda/lib/python2.7/lib-dynload/future_builtins.so
+7fd8fc360000-7fd8fc362000 r-xp 00000000 08:06 4982758                    /home/marenger/anaconda/lib/python2.7/lib-dynload/grp.so
+7fd8fc362000-7fd8fc561000 ---p 00002000 08:06 4982758                    /home/marenger/anaconda/lib/python2.7/lib-dynload/grp.so
+7fd8fc561000-7fd8fc562000 rw-p 00001000 08:06 4982758                    /home/marenger/anaconda/lib/python2.7/lib-dynload/grp.so
+7fd8fc562000-7fd8fc57e000 r-xp 00000000 08:06 4982734                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_io.so
+7fd8fc57e000-7fd8fc77d000 ---p 0001c000 08:06 4982734                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_io.so
+7fd8fc77d000-7fd8fc787000 rw-p 0001b000 08:06 4982734                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_io.so
+7fd8fc787000-7fd8fc7c7000 rw-p 00000000 00:00 0 
+7fd8fc7c7000-7fd8fcddf000 r-xp 00000000 08:06 4202551                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/_umath_linalg.so
+7fd8fcddf000-7fd8fcfde000 ---p 00618000 08:06 4202551                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/_umath_linalg.so
+7fd8fcfde000-7fd8fcfe7000 rw-p 00617000 08:06 4202551                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/_umath_linalg.so
+7fd8fcfe7000-7fd8fd06a000 rw-p 00000000 00:00 0 
+7fd8fd06a000-7fd8fd07f000 r-xp 00000000 08:06 13766493                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7fd8fd07f000-7fd8fd27e000 ---p 00015000 08:06 13766493                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7fd8fd27e000-7fd8fd27f000 r--p 00014000 08:06 13766493                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7fd8fd27f000-7fd8fd280000 rw-p 00015000 08:06 13766493                   /lib/x86_64-linux-gnu/libgcc_s.so.1
+7fd8fd280000-7fd8fd316000 r-xp 00000000 08:06 4461849                    /home/marenger/anaconda/lib/libgfortran.so.1.0.0
+7fd8fd316000-7fd8fd515000 ---p 00096000 08:06 4461849                    /home/marenger/anaconda/lib/libgfortran.so.1.0.0
+7fd8fd515000-7fd8fd517000 rw-p 00095000 08:06 4461849                    /home/marenger/anaconda/lib/libgfortran.so.1.0.0
+7fd8fd517000-7fd8fd84a000 r-xp 00000000 08:06 4202554                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
+7fd8fd84a000-7fd8fda49000 ---p 00333000 08:06 4202554                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
+7fd8fda49000-7fd8fda4e000 rw-p 00332000 08:06 4202554                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/linalg/lapack_lite.so
+7fd8fda4e000-7fd8fdab8000 rw-p 00000000 00:00 0 
+7fd8fdab8000-7fd8fdabe000 r-xp 00000000 08:06 4202460                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/lib/_compiled_base.so
+7fd8fdabe000-7fd8fdcbe000 ---p 00006000 08:06 4202460                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/lib/_compiled_base.so
+7fd8fdcbe000-7fd8fdcbf000 rw-p 00006000 08:06 4202460                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/lib/_compiled_base.so
+7fd8fdcbf000-7fd8fde40000 rw-p 00000000 00:00 0 
+7fd8fde40000-7fd8fde69000 r-xp 00000000 08:06 4201994                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/scalarmath.so
+7fd8fde69000-7fd8fe069000 ---p 00029000 08:06 4201994                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/scalarmath.so
+7fd8fe069000-7fd8fe06b000 rw-p 00029000 08:06 4201994                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/scalarmath.so
+7fd8fe06b000-7fd8fe06d000 r-xp 00000000 08:06 4982730                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_functools.so
+7fd8fe06d000-7fd8fe26d000 ---p 00002000 08:06 4982730                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_functools.so
+7fd8fe26d000-7fd8fe26e000 rw-p 00002000 08:06 4982730                    /home/marenger/anaconda/lib/python2.7/lib-dynload/_functools.so
+7fd8fe26e000-7fd8fe2ae000 rw-p 00000000 00:00 0 
+7fd8fe2ae000-7fd8fe717000 r-xp 00000000 08:06 4201928                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/_dotblas.so
+7fd8fe717000-7fd8fe916000 ---p 00469000 08:06 4201928                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/_dotblas.so
+7fd8fe916000-7fd8fe91b000 rw-p 00468000 08:06 4201928                    /home/marenger/anaconda/lib/python2.7/site-packages/numpy/core/_dotblas.so
+7fd8fe91b000-7fd8fe91f000 r-xp 00000000 08:06 4982752                    /home/marenger/anaconda/lib/python2.7/lib-dynload/cStringIO.so
+7fd8fe91f000-7fd8feb1e000 ---p 00004000 08:06 4982752                    /home/marenger/anaconda/lib/python2.7/lib-dynload/cStringIO.so
+7fd8feb1e000-7fd8feb20000 rw-p 00003000 08:06 4982752                    /home/marenger/anaconda/lib/python2.7/lib-dynload/cStringIO.soAborted (core dumped)
