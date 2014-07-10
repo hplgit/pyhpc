@@ -1,6 +1,5 @@
 import numpy as np
 cimport numpy as np
-#from cython.parallel cimport *
 cimport cython
 ctypedef np.float64_t DT    # data type
 
@@ -11,15 +10,16 @@ cpdef advance(
     np.ndarray[DT, ndim=2, mode='c'] u_1,
     np.ndarray[DT, ndim=2, mode='c'] u_2,
     np.ndarray[DT, ndim=2, mode='c'] f,
-    double Cx2, double Cy2, double dt):
-    cdef int Ix_start = 0
-    cdef int Iy_start = 0
-    cdef int Ix_end = u.shape[0]-1
-    cdef int Iy_end = u.shape[1]-1
-    cdef double dt2 = dt**2
+    double Cx2, double Cy2, double dt2):
 
-    cdef int i, j
-    cdef double u_xx, u_yy
+    cdef:
+        int Ix_start = 0
+        int Iy_start = 0
+        int Ix_end = u.shape[0]-1
+        int Iy_end = u.shape[1]-1
+        int i, j
+        double u_xx, u_yy
+
     for i in range(Ix_start+1, Ix_end):
         for j in range(Iy_start+1, Iy_end):
             u_xx = u_1[i-1,j] - 2*u_1[i,j] + u_1[i+1,j]
@@ -33,7 +33,6 @@ cpdef advance(
     for i in range(Ix_start, Ix_end+1): u[i,j] = 0
     i = Ix_start
     for j in range(Iy_start, Iy_end+1): u[i,j] = 0
-    i = Iy_end
+    i = Ix_end
     for j in range(Iy_start, Iy_end+1): u[i,j] = 0
-
     return u

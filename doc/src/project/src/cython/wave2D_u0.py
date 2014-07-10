@@ -6,7 +6,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
     if version == 'cython':
         try:
             #import pyximport; pyximport.install()
-            import wave2D_u0_cy as compiled_loops
+            import wave2D_u0_loop_cy as compiled_loops
             advance = compiled_loops.advance
         except ImportError as e:
             print 'No module wave2D_u0_loop_cy. Run make_wave2D.sh!'
@@ -86,7 +86,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
                 u_1[i,j] = I(x[i], y[j])
     else: # use vectorized version
         u_1[:,:] = I(xv, yv)
-    
+
     if user_action is not None:
         user_action(u_1, x, xv, y, yv, t, 0)
 
@@ -185,7 +185,9 @@ def advance_vectorized(u, u_1, u_2, f_a, Cx2, Cy2, dt,
 
 import nose.tools as nt
 
-def test_quadratic(Nx=4, Ny=5):
+#def test_quadratic(Nx=4, Ny=5):
+def test_quadratic():
+
     def exact_solution(x, y, t):
         return x*(Lx - x)*y*(Ly - y)*(1 + 0.5*t)
 
@@ -209,9 +211,12 @@ def test_quadratic(Nx=4, Ny=5):
         #print n, version, diff
         nt.assert_almost_equal(diff, 0, places=12)
 
-    dt,cpu = solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
-                     user_action=assert_no_error,
-                     version='cython')
+    for Nx in range(2, 6, 2):
+        for Ny in range(2, 6, 2):
+            dummy, cpu = solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
+                                user_action=assert_no_error,
+                                version='cython')
+        print 'Last call to solver: Nx=%d, Ny=%d' % (Nx, Ny)
     print "Time: %g" %cpu
 
 if __name__ == '__main__':
