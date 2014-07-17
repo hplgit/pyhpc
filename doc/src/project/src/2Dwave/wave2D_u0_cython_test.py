@@ -64,7 +64,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
         except ImportError:
             print 'No module wave2D_u0_loop_c_f2py. Run make_wave2D.sh!'
             sys.exit(1)
-    elif version == 'c_cy':
+    elif version == 'pc_cy':
         try:
             import wave2D_u0_loop_c_cy as compiled_loops
             advance = compiled_loops.advance_cwrap
@@ -343,7 +343,7 @@ def quadratic(Nx, Ny, version):
 
 
 def test_quadratic(Nx, Ny):
-    versions = 'vectorized', 'cython', 'pcython', 'numexpr', 'numba'
+    versions = 'vectorized', 'cython', 'pcython', 'numexpr', 'numba', 'pc_cy'
     table_dict = {}
     for version in versions:
         new_dt, cpu = quadratic(Nx, Ny, version)
@@ -351,10 +351,12 @@ def test_quadratic(Nx, Ny):
     make_table(table_dict, Nx, Ny)
 
 def make_table(time_dict, Nx, Ny):
+    vec_time = time_dict['vectorized']
     print "Statistics for Nx = %d, Ny = %d \n" %(Nx, Ny)
-    print "%12s %12.5s" %("Version:", "Time:")
+    print "%12s %12.5s %12.9s" %("Version:", "Time:", "Speed-up:")
     for v in sorted(time_dict, key=time_dict.get, reverse=True):
-        print "%12s %12.8f" %(v,time_dict[v])
+        spdup = vec_time/float(time_dict[v])
+        print "%12s %12.8f %12.8f" %(v,time_dict[v], spdup)
     print "" #Linjeskift
 
 """
@@ -444,5 +446,5 @@ def gaussian(plot_method=2, version='vectorized', save_plot=True):
 """
 
 if __name__ == '__main__':
-    test_quadratic(60,60)
-    test_quadratic(200,200)
+    #test_quadratic(60,60)
+    test_quadratic(200,250)
