@@ -24,7 +24,7 @@ level (x and y are one-dimensional coordinate vectors).
 This function allows the calling code to plot the solution,
 compute errors, etc.
 """
-import timeit, sys
+import time, sys
 #from scitools.all import *
 from numpy import *
 import numexpr as ne
@@ -121,7 +121,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
     Iy = range(0, u.shape[1])
     It = range(0, t.shape[0])
 
-    timer = timeit.default_timer          # for measuring CPU time
+    timer = time.clock          # for measuring CPU time
     t0 = timer()
 
     # Load initial condition into u_1
