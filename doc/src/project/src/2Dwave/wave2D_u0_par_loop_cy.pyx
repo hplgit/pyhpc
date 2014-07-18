@@ -6,6 +6,7 @@ ctypedef np.float64_t DT    # data type
 
 @cython.boundscheck(False)  # turn off array bounds check
 @cython.wraparound(False)   # turn off negative indices (u[-1,-1])
+@cython.cdivision(True)
 cpdef advance(
     np.ndarray[DT, ndim=2, mode='c'] u,
     np.ndarray[DT, ndim=2, mode='c'] u_1,
@@ -25,7 +26,7 @@ cpdef advance(
         double u_xx, u_yy
 
     for i in prange(Ix_start+1, Ix_end, nogil=True, schedule='static', chunksize=xsize, num_threads=num_threads):
-        for j in prange(Iy_start+1, Iy_end, schedule='static', chunksize=ysize, num_threads=num_threads):
+        for j in prange(Iy_start+1, Iy_end, schedule='static', chunksize=ysize):
             u_xx = u_1[i-1,j] - 2*u_1[i,j] + u_1[i+1,j]
             u_yy = u_1[i,j-1] - 2*u_1[i,j] + u_1[i,j+1]
             u[i,j] = 2*u_1[i,j] - u_2[i,j] + Cx2*u_xx + Cy2*u_yy + dt2*f[i,j]
