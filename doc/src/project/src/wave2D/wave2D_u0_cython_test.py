@@ -168,7 +168,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
         elif version == 'numba':
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
             u = advance(u, u_1, u_2, f_a, V_a, Cx2, Cy2, Nx, Ny, n, dt, False)
-            
+
         else:
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
             u = advance(u, u_1, u_2, f_a, Cx2, Cy2, dt2)
@@ -252,7 +252,7 @@ def advance_jit(u, u_1, u_2, f, V, Cx2, Cy2, Nx, Ny, n, dt, step1):
         D1 = 1; D2 = 0
     else:
         D1 = 2; D2 = 1
-        
+
     for i in range(1, u.shape[0]-1):
         for j in range(1, u.shape[1]-1):
             u_xx = u_1[i-1,j] - 2*u_1[i,j] + u_1[i+1,j]
@@ -262,14 +262,14 @@ def advance_jit(u, u_1, u_2, f, V, Cx2, Cy2, Nx, Ny, n, dt, step1):
             if step1:
                 u[i,j] += dt*V[i,j]
 
-    #Boundary cond u=0        
-    for i in Ix: 
+    #Boundary cond u=0
+    for i in Ix:
         u[i,0] = 0
-    for i in Ix: 
+    for i in Ix:
         u[i,Ny] = 0
-    for j in Iy: 
+    for j in Iy:
         u[0,j] = 0
-    for j in Iy: 
+    for j in Iy:
         u[Nx,j] = 0
 
     return u
@@ -288,8 +288,8 @@ def advance_numexpr(u, u_1, u_2, f_a, Cx2, Cy2, dt2, V=None, step1=False):
     u_yy = ne.evaluate("u_10 - 2*u_11 + u_12", local_dict={"u_10":u_1[1:-1,:-2],
                                                            "u_11":u_1[1:-1,1:-1],
                                                            "u_12":u_1[1:-1,2:]})
-    u[1:-1,1:-1] = ne.evaluate("D1*u_11 - D2*u_21 + Cx2*u_xx + Cy2*u_yy + dt2*f_a", 
-                               local_dict={"u_11":u_1[1:-1,1:-1], "u_21":u_2[1:-1,1:-1], 
+    u[1:-1,1:-1] = ne.evaluate("D1*u_11 - D2*u_21 + Cx2*u_xx + Cy2*u_yy + dt2*f_a",
+                               local_dict={"u_11":u_1[1:-1,1:-1], "u_21":u_2[1:-1,1:-1],
                                            "D1":D1, "D2":D2,"u_xx": u_xx, "u_yy":u_yy,
                                            "Cx2":Cx2, "Cy2":Cy2, "dt2":dt2, "f_a":f_a[1:-1,1:-1]})
 
