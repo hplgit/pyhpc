@@ -54,9 +54,9 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
             import wave2D_u0_loop_jit as compiled_loops
             advance = compiled_loops.advance
         except ImportError as e:
-            print 'No module wave2D_u0_loop_jit. Run make_wave2D_u0.sh!'
-            print e
-            sys.exit(1)
+            if 'numbapro' in str(e):
+                print 'numbapro cannot be imported'
+                return None, None
     elif version == 'numexpr':
         try:
             import wave2D_u0_loop_ne as compiled_loops
@@ -159,7 +159,6 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
         f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
         V_a = V(xv, yv)
         u = advance(u, u_1, u_2, f_a, V_a, Cx2, Cy2, Nx, Ny, n, dt, True)
-
     else:
         f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
         V_a = V(xv, yv)
@@ -179,7 +178,7 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
         elif version == 'numba':
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
             u = advance(u, u_1, u_2, f_a, V_a, Cx2, Cy2, Nx, Ny, n, dt, False)
-            
+
         else:
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
             u = advance(u, u_1, u_2, f_a, Cx2, Cy2, dt2)
@@ -279,7 +278,8 @@ def quadratic(Nx, Ny, version):
         diff = abs(u - u_e).max()
         #print n, version, diff
         nt.assert_almost_equal(diff, 0, places=8,
-            msg='diff=%g, step %d, time=%g' % (diff, n, t[n]))
+            msg='diff=%g, step %d, time=%g, version=%s' %
+                               (diff, n, t[n], version))
 
     new_dt, cpu = solver(
         I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
@@ -291,8 +291,14 @@ def test_quadratic(Nx, Ny):
     versions = 'vectorized', 'cython', 'pcython', 'numexpr', 'numba', 'pc_cy'
     table_dict = {}
     for version in versions:
-        new_dt, cpu = quadratic(Nx, Ny, version)
-        table_dict[version] = cpu
+        try:
+            print version, '%dx%d' % (Nx, Ny)
+            new_dt, cpu = quadratic(Nx, Ny, version)
+        except AssertionError as e:
+            print '%s failed the test: %s' % (version, e)
+            cpu = None
+        if cpu is not None:
+            table_dict[version] = cpu
     make_table(table_dict, Nx, Ny)
 
 def make_table(time_dict, Nx, Ny):
@@ -302,7 +308,7 @@ def make_table(time_dict, Nx, Ny):
     for v in sorted(time_dict, key=time_dict.get, reverse=True):
         spdup = vec_time/float(time_dict[v])
         print "%12s %12.8f %12.8f" %(v,time_dict[v], spdup)
-    print "" #Linjeskift
+    print
 
 """
 def run_efficiency(nrefinements=4):

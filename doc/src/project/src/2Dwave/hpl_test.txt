@@ -1,0 +1,16 @@
+vectorized 200x250
+cython 200x250
+pcython 200x250
+numexpr 200x250
+numba 200x250
+numbapro cannot be imported
+pc_cy 200x250
+pc_cy failed the test: diff=0.000528644, step 2, time=0.0124939, version=pc_cy
+Statistics for Nx = 200, Ny = 250 
+
+    Version:        Time:    Speed-up:
+     pcython  22.29059500   0.37749925
+     numexpr  11.20776300   0.75079059
+  vectorized   8.41468300   1.00000000
+      cython   3.56699600   2.35903909
+
