@@ -18,7 +18,7 @@ void advance(double* u, double* u_1, double* u_2, double* f,
   /* Scheme at interior points */
     #pragma omp parallel for schedule(static, xsize)
     for (i=1; i<=Nx-1; i++) {
-	#pragma omp parallel for schedule(static, ysize)
+        #pragma omp parallel for schedule(static, ysize)
 	for (j=1; j<=Ny-1; j++) {
 	    u_xx = u_1[idx(i-1,j)] - 2*u_1[idx(i,j)] + u_1[idx(i+1,j)];
 	    u_yy = u_1[idx(i,j-1)] - 2*u_1[idx(i,j)] + u_1[idx(i,j+1)];
