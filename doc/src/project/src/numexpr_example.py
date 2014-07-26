@@ -1,23 +1,23 @@
 import numpy as np
 import numexpr as ne
-import timeit
+import time
+timer_function = time.clock
 
-def sum(N):
+def sum(M, N):
     x = np.zeros(N)
-    expr = 'x + 2*x + 3*x + 4*x + 5*x + 6*x + 7*x + 8*x + 9*x'
-    t0 = timeit.default_timer()
+    expr = ' + ',join(['%d*x' % i for i in range(1, M+1)])
+    t0 = timer_function()
     eval(expr)
-    t1 = timeit.default_timer()
-    np_time = t1 - t0
+    np_time = timer_function() - t0
 
-    t0 = timeit.default_timer()
+    t0 = timer_function()
     ne.evaluate(expr)
-    t1 = timeit.default_timer()
-    ne_time = t1 - t0
-    
+    ne_time = timer_function() - t0
+
     return ne_time, np_time
 
 if __name__ == '__main__':
-    ne_time, np_time = sum(1000)
-    print "Numexpr:", ne_time
-    print "Numpy:  ", np_time
+    for M = 10, 20, 30:
+        for N = 1000, 100000, 10000000:
+            ne_time, np_time = sum(M, N)
+            print "N=%8d, M=%d numexpr/numpy: %.4f" % (N, M, ne_time/np_time)
