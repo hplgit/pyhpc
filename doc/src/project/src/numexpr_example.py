@@ -5,7 +5,7 @@ timer_function = time.clock
 
 def sum(M, N):
     x = np.zeros(N)
-    expr = ' + ',join(['%d*x' % i for i in range(1, M+1)])
+    expr = ' + '.join(['%d*x' % i for i in range(1, M+1)])
     t0 = timer_function()
     eval(expr)
     np_time = timer_function() - t0
@@ -17,7 +17,7 @@ def sum(M, N):
     return ne_time, np_time
 
 if __name__ == '__main__':
-    for M = 10, 20, 30:
-        for N = 1000, 100000, 10000000:
+    for M in 2, 5, 10, 30:
+        for N in 1000, 100000, 1000000:
             ne_time, np_time = sum(M, N)
             print "N=%8d, M=%d numexpr/numpy: %.4f" % (N, M, ne_time/np_time)
