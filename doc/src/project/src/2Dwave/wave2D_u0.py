@@ -24,6 +24,7 @@ level (x and y are one-dimensional coordinate vectors).
 This function allows the calling code to plot the solution,
 compute errors, etc.
 """
+
 import time, sys
 #from scitools.all import *
 from numpy import *
@@ -62,9 +63,25 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
             import wave2D_u0_loop_ne as compiled_loops
             advance = compiled_loops.advance
         except ImportError as e:
-            print 'No module wave2D_u0_loop_ne.'
-            print e
-            sys.exit(1)
+            if 'numexpr' in str(e):
+                print "numexpr cannot be imported"
+                return None, None
+    elif version == 'pythran':
+        try:
+            import wave2D_u0_loop_pythran as compiled_loops
+            advance = compiled_loops.advance
+        except Error as e:
+            print "error in Pythran module"
+            return None, None
+    elif version == 'theano':
+        try:
+            import wave2D_u0_loop_theano as compiled_loops
+            advance = compiled_loops.advance
+        except ImportError as e:
+            if 'theano' in str(e):
+                print "theano cannot be imported"
+                return None, None
+
     elif version == 'f77':
         try:
             import wave2D_u0_loop_f77 as compiled_loops
@@ -178,6 +195,9 @@ def solver(I, V, f, c, Lx, Ly, Nx, Ny, dt, T,
         elif version == 'numba':
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
             u = advance(u, u_1, u_2, f_a, V_a, Cx2, Cy2, Nx, Ny, n, dt, False)
+        elif version == 'pythran':
+            f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
+            u = advance(u, u_1, u_2, f_a, Cx2, Cy2, dt2, zeros((Nx,Ny)), False)
 
         else:
             f_a[:,:] = f(xv, yv, t[n])  # precompute, size as u
@@ -288,7 +308,7 @@ def quadratic(Nx, Ny, version):
 
 
 def test_quadratic(Nx, Ny):
-    versions = 'vectorized', 'cython', 'pcython', 'numexpr', 'numba', 'pc_cy'
+    versions = 'vectorized', 'cython', 'pcython', 'numexpr', 'numba', 'pc_cy', 'pythran'
     table_dict = {}
     for version in versions:
         try:
@@ -397,5 +417,5 @@ def gaussian(plot_method=2, version='vectorized', save_plot=True):
 """
 
 if __name__ == '__main__':
-    #test_quadratic(60,60)
-    test_quadratic(200,250)
+    test_quadratic(60,60)
+    #test_quadratic(400,400)

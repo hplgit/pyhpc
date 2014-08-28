@@ -38,3 +38,8 @@ else
   exit 1
 fi
 
+#Pythran
+module=wave2D_u0_loop_pythran
+rm -f $module.so
+pythran ${module}.py
+

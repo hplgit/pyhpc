@@ -2,6 +2,7 @@ import numexpr as ne
 
 def advance(u, u_1, u_2, f_a, Cx2, Cy2, dt2, V=None, step1=False):
     if step1:
+        #ne.set_vml_num_threads(2)
         dt = sqrt(dt2)
         Cx2 = 0.5*Cx2;  Cy2 = 0.5*Cy2; dt2 = 0.5*dt2
         D1 = 1;  D2 = 0
